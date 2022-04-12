@@ -1,0 +1,33 @@
+name: Python unit tests
+description: Run python unit tests
+
+inputs:
+  python-version:
+    description: Python version to run tests
+    required: true
+  coverage-path:
+    description: Path or package name to measure during execution
+    required: true
+  coverage-threshold:
+    description: Fail if the total coverage is less than this threshold
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov mock
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Test with pytest
+      shell: bash
+      run: |
+        pytest --cov ${{ inputs.coverage-path }} --cov-fail-under ${{ inputs.coverage-threshold }} --no-cov-on-fail
