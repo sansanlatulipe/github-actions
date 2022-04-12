@@ -5,9 +5,9 @@ inputs:
   python-version:
     description: Python version to lint code
     required: true
-  exclude-paths:
+  exclude-path:
     description: List of files or directories to skip
-    required: false
+    required: true
 
 runs:
   using: composite
@@ -31,4 +31,4 @@ runs:
     - name: Analysing the code with pylint
       shell: bash
       run: |
-        pylint --ignore-paths=$(pwd)/${{ join(inputs.exclude-paths, ',$(pwd)/') }} $(pwd)
+        pylint --ignore-paths=$(pwd)/${{ inputs.exclude-path }} $(pwd)

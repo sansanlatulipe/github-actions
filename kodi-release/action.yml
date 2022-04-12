@@ -2,6 +2,9 @@ name: Release kodi addon
 description: Create a new version of a kodi addon
 
 inputs:
+  kodi-version:
+    description: Name of kodi version
+    required: true
 
 runs:
   using: composite
@@ -31,7 +34,7 @@ runs:
       shell: bash
       run: |
         pip install kodi-addon-checker
-        kodi-addon-checker --branch matrix
+        kodi-addon-checker --branch ${{ inputs.kodi-version }}
     - name: Build asset
       shell: bash
       env:
