@@ -5,6 +5,9 @@ inputs:
   kodi-version:
     description: Name of kodi version
     required: true
+  github-token:
+    description: Token to the github project using this action
+    required: true
 
 runs:
   using: composite
@@ -50,7 +53,7 @@ runs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
       with:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
@@ -60,7 +63,7 @@ runs:
     - name: Upload release asset
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./${{ steps.config.outputs.addon_asset }}
