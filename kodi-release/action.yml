@@ -10,6 +10,7 @@ runs:
   using: composite
   steps:
     - name: Initialize release variables
+      shell: bash
       id: config
       run: |
         addon_name=`echo "${GITHUB_REPOSITORY}" | cut -d / -f 2`
