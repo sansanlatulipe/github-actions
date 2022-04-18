@@ -18,7 +18,7 @@ runs:
       run: |
         addon_name=`echo "${GITHUB_REPOSITORY}" | cut -d / -f 2`
         addon_version=`echo "${GITHUB_REF}" | cut -d / -f 3`
-        prerelease=`echo ${addon_version} | grep -Eq -- '-.+$' && echo true || echo false`
+        prerelease=`echo ${addon_version} | grep -Eq -- '\+.+$' && echo true || echo false`
         echo "##[set-output name=addon_name;]${addon_name}"
         echo "##[set-output name=addon_version;]${addon_version}"
         echo "##[set-output name=addon_asset;]${addon_name}_${addon_version}.zip"
