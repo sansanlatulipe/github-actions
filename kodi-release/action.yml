@@ -19,10 +19,10 @@ runs:
         addon_name=`echo "${GITHUB_REPOSITORY}" | cut -d / -f 2`
         addon_version=`echo "${GITHUB_REF}" | cut -d / -f 3`
         prerelease=`echo ${addon_version} | grep -Eq -- '\+.+$' && echo true || echo false`
-        echo "##[set-output name=addon_name;]${addon_name}"
-        echo "##[set-output name=addon_version;]${addon_version}"
-        echo "##[set-output name=addon_asset;]${addon_name}_${addon_version}.zip"
-        echo "##[set-output name=prerelease;]${prerelease}"
+        echo "addon_name=${addon_name}" >> $GITHUB_OUTPUT
+        echo "addon_version=${addon_version}" >> $GITHUB_OUTPUT
+        echo "addon_asset=${addon_name}_${addon_version}.zip" >> $GITHUB_OUTPUT
+        echo "prerelease=${prerelease}" >> $GITHUB_OUTPUT
     - name: Render addon.xml
       shell: bash
       env:
