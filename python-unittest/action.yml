@@ -30,4 +30,4 @@ runs:
       run: |
         pytest --cov ${{ inputs.coverage-path }} --cov-fail-under ${{ inputs.coverage-threshold }} --no-cov-on-fail
     - name: Upload code coverage to CodeCov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v4
