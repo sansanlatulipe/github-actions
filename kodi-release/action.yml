@@ -23,32 +23,16 @@ runs:
         echo "addon_version=${addon_version}" >> $GITHUB_OUTPUT
         echo "addon_asset=${addon_name}_${addon_version}.zip" >> $GITHUB_OUTPUT
         echo "prerelease=${prerelease}" >> $GITHUB_OUTPUT
-    - name: Render addon.xml
+
+    - name: Build addon asset
       shell: bash
       env:
         addon_name: ${{ steps.config.outputs.addon_name }}
         addon_version: ${{ steps.config.outputs.addon_version }}
+        kodi_version: ${{ inputs.kodi-version }}
       run: |
-        sed -i addon.xml \
-            -e "s/{{ addon_name }}/${addon_name}/" \
-            -e "s/{{ addon_version }}/${addon_version}/" \
-            -e "/{{ addon_changelog }}/r changelog.txt" \
-            -e "s/^.*{{ addon_changelog }}/${addon_version} (`date +'%Y-%m-%d'`)/"
-    - name: Check addon resources
-      shell: bash
-      run: |
-        pip install kodi-addon-checker
-        kodi-addon-checker --branch ${{ inputs.kodi-version }}
-    - name: Build asset
-      shell: bash
-      env:
-        addon_name: ${{ steps.config.outputs.addon_name }}
-        addon_asset: ${{ steps.config.outputs.addon_asset }}
-      run: |
-        mkdir .${addon_name}
-        cp -r * .${addon_name}
-        mv .${addon_name} ${addon_name}
-        zip -r ${addon_asset} ${addon_name}
+        make ADDON_NAME=${addon_name} ADDON_VERSION=${addon_version} KODI_VERSION=${kodi_version}
+
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
@@ -60,6 +44,7 @@ runs:
         body_path: ./changelog.txt
         prerelease: ${{ steps.config.outputs.prerelease }}
         draft: false
+
     - name: Upload release asset
       uses: actions/upload-release-asset@v1
       env:
