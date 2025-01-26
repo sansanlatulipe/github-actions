@@ -41,7 +41,7 @@ runs:
       with:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
-        body_path: /tmp/changelog.txt
+        body_path: .build/changelog.txt
         prerelease: ${{ steps.config.outputs.prerelease }}
         draft: false
 
