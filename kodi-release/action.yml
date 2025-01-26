@@ -41,7 +41,7 @@ runs:
       with:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
-        body_path: ./changelog.txt
+        body_path: /tmp/changelog.txt
         prerelease: ${{ steps.config.outputs.prerelease }}
         draft: false
 
@@ -51,6 +51,6 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./${{ steps.config.outputs.addon_asset }}
+        asset_path: .build/${{ steps.config.outputs.addon_asset }}
         asset_name: ${{ steps.config.outputs.addon_asset }}
         asset_content_type: application/zip
